@@ -1,0 +1,184 @@
+/* Mantén el nav con 3 columnas (menú - logo - teléfono) */
+.nav {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+}
+
+.menu.left {
+  display: flex;
+  gap: .75rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  justify-content: flex-start;
+}
+
+.logo { display: flex; justify-content: center; }
+.logo img { max-height: 100px; }
+
+.phone { display: flex; justify-content: flex-end; }
+
+/* ===== Layout del contenido ===== */
+.about-section {
+  padding: 60px 20px;
+  display: grid;
+  place-items: center;
+}
+
+/* Grid con áreas: arriba Enunciado (2 columnas), abajo Misión | Visión */
+.about-card {
+  width: min(1100px, 100% - 2rem);
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "enunciado enunciado"
+    "mision    vision";
+}
+
+/* Áreas */
+.about-enunciado { grid-area: enunciado; }
+.about-mision    { grid-area: mision; }
+.about-vision    { grid-area: vision; }
+
+/* Tipografía y centrado */
+.about-block h3 {
+  margin: 0 0 10px;
+  text-align: center;
+  color: var(--color-acento-marron);
+}
+
+.about-enunciado p {
+  margin: 0;
+  text-align: center; /* si prefieres izquierda, cámbialo a left */
+}
+
+.about-mision p,
+.about-vision p {
+  margin: 0;
+  text-align: center; /* centrados como pediste */
+}
+
+/* Responsivo: apila en móviles */
+@media (max-width: 900px) {
+  .about-card {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "enunciado"
+      "mision"
+      "vision";
+  }
+}
+.about-enunciado {
+  text-align: center; /* mantiene todo centrado */
+}
+
+.about-heading-img {
+  display: block;
+  margin: 0 auto 12px; /* centrado + espacio bajo la imagen */
+  max-width: 260px;    /* ajusta el tamaño del “título” en imagen */
+  width: 100%;
+  height: auto;
+}
+/* Links del menú */
+.menu a{
+  display: inline-block;
+  padding: .5rem .9rem;
+  border-radius: 999px;
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--color-acento-verde);
+  transition: color .2s ease, background .2s ease, transform .2s ease, box-shadow .2s ease;
+}
+
+/* Hover: píldora amarilla + texto marrón + lift */
+.menu a:hover{
+  background: var(--color-acento-amarillo);
+  color: var(--color-acento-marron);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,.08);
+}
+
+/* Página actual: verde sólido con texto blanco */
+.menu a[aria-current="page"]{
+  background: var(--color-acento-verde);
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(0,0,0,.10);
+}
+/* ===== About “pro” (solo estilo) ===== */
+.about-section{
+  padding: clamp(48px, 6vw, 80px) 20px;
+  display: grid;
+  place-items: center;
+}
+
+/* La card existente, pero con look “glass” elegante */
+.about-card{
+  width: min(1100px, 100% - 2rem);
+  background: rgba(255,255,255,.82);
+  border: 1px solid rgba(255,255,255,.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 18px;
+  padding: clamp(20px, 3vw, 32px);
+  box-shadow: 0 12px 30px rgba(0,0,0,.12);
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "enunciado enunciado"
+    "mision    vision";
+}
+
+/* Títulos y párrafos más pulidos */
+.about-block h3{
+  margin: 0 0 10px;
+  text-align: center;
+  color: var(--color-acento-marron);
+  font-weight: 800;
+  letter-spacing: .02em;
+  position: relative;
+}
+.about-block h3::after{
+  content: "";
+  display: block;
+  width: 60px;
+  height: 4px;
+  border-radius: 4px;
+  background: var(--color-acento-amarillo);
+  margin: 8px auto 0;
+}
+.about-block p{
+  margin: 0;
+  line-height: 1.65;
+  color: var(--color-texto-principal);
+  text-align: center;  /* si lo prefieres a la izquierda: left */
+}
+
+/* Imagen de “Enunciado” (tu logo) */
+.about-heading-img{
+  display: block;
+  margin: 0 auto 12px;
+  max-width: 260px;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 6px 18px rgba(0,0,0,.12));
+}
+
+/* Opcional: iconitos sutiles en los títulos */
+.about-mision h3::before{ content:"🎯 "; }
+.about-vision h3::before{ content:"👁️ "; }
+
+/* Responsivo */
+@media (max-width: 900px){
+  .about-card{
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "enunciado"
+      "mision"
+      "vision";
+  }
+}
+
+
