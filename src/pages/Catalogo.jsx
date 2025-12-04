@@ -1,28 +1,51 @@
-import { useState } from 'react'
-import { productos } from '../data/productos'
-import ProductCard from '../components/molecules/ProductCard'
+// src/pages/CatalogoPage.jsx
 
-const filtros = [
-  { key: 'all', label: 'Todos los Productos' },
-  { key: 'frutas', label: 'Frutas' },
-  { key: 'verduras', label: 'Verduras' },
-  { key: 'otros', label: 'Otros' }
-]
+import React, { useState, useEffect } from 'react';
+import { getProducts } from '../services/api';
+import ProductCard from '../components/molecules/ProductCard';
 
-export default function Catalogo(){
-  const [filtro, setFiltro] = useState('all')
-  const lista = filtro === 'all' ? productos : productos.filter(p => p.categoria === filtro)
+const CatalogoPage = () => {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await getProducts();
+        setProducts(response.data);
+      } catch (err) {
+        setError('No se pudieron cargar los productos. Inténtalo de nuevo más tarde.');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  if (loading) {
+    return <p>Cargando nuestro catálogo...</p>;
+  }
+
+  if (error) {
+    return <p style={{ color: 'red' }}>{error}</p>;
+  }
+
   return (
-    <main className="catalogo-container">
-      <header className="page-header"><h1 className="page-title">PRODUCTOS</h1></header>
-      <div className="filter-container" style={{display:'flex', gap:8, flexWrap:'wrap'}}>
-        {filtros.map(f => (
-          <button key={f.key} className={`filter-btn ${filtro===f.key?'active':''}`} onClick={()=>setFiltro(f.key)}>{f.label}</button>
+    <div className="catalogo">
+      <h1>Catálogo de Productos</h1>
+      <div className="product-grid">
+        {products.map(product => (
+          // --- ¡AQUÍ ESTÁ LA CORRECCIÓN! ---
+          // Cambiamos la prop "product" por "p" para que coincida
+          // con lo que espera el componente ProductCard.
+          <ProductCard key={product.id} p={product} />
         ))}
       </div>
-      <div className="product-grid">
-        {lista.map(p => (<ProductCard key={p.id} p={p} />))}
-      </div>
-    </main>
-  )
-}
+    </div>
+  );
+};
+
+export default CatalogoPage;

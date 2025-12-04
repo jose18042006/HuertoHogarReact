@@ -1,5 +1,3 @@
-
-
 /* Importar fuentes de Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@400;700&display=swap');
 :root {
@@ -457,12 +455,15 @@ a:hover {
   display: flex;
   align-items: center;
   gap: 1rem; /* separación entre carrito y número */
+  justify-content: flex-end; /* <-- MODIFICACIÓN 1: Alinear todo a la derecha */
 }
 
 /* 🔹 botón del carrito */
 .nav-button {
-  display: inline-block;
-  padding: 8px 14px;
+  display: inline-flex; /* Usamos inline-flex para alinear texto e íconos */
+  align-items: center; /* Centra verticalmente el contenido */
+  padding: 6px 12px; /* <-- MODIFICACIÓN 2: Reducimos el padding para hacerlos más pequeños */
+  font-size: 14px; /* <-- MODIFICACIÓN 3: Reducimos el tamaño de la letra */
   color: var(--color-acento-verde);
   font-weight: 600;
   text-decoration: none;
@@ -488,7 +489,8 @@ a:hover {
   color: var(--color-acento-verde);
   text-decoration: none;
   border: 2px solid var(--color-acento-verde);
-  padding: 6px 12px;
+  padding: 6px 12px; /* <-- MODIFICACIÓN 4: Aplicamos el mismo tamaño que a los otros botones */
+  font-size: 14px; /* <-- MODIFICACIÓN 5: Aplicamos el mismo tamaño de letra */
   border-radius: 8px;
   transition: all 0.3s ease;
 }
@@ -707,6 +709,22 @@ label {
 .cart-checkout:hover {
   transform: translateY(-1px);
   box-shadow: 0 10px 26px rgba(0,0,0,.12);
+}
+
+/* ============================================= */
+/*       Solución para Sticky Footer             */
+/* ============================================= */
+
+/* 1. El contenedor principal de la aplicación */
+.app-container {
+  display: flex; /* Activa Flexbox */
+  flex-direction: column; /* Apila los elementos verticalmente (Header, main, Footer) */
+  min-height: 100vh; /* Asegura que el contenedor ocupe AL MENOS el 100% de la altura de la pantalla */
+}
+
+/* 2. El contenido principal (la parte que cambia con las rutas) */
+.main-content {
+  flex-grow: 1; /* ¡Esta es la línea clave! Le dice al contenido principal que "crezca" y ocupe todo el espacio sobrante, empujando el footer hacia abajo. */
 }
 
 /* Responsivo */
