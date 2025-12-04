@@ -1,57 +1,35 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+// src/pages/Carrito.jsx
 
-// Bootstrap y estilos globales
+import React from "react";
+import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "../styles/estilos.css";
 
+// --- ¡AQUÍ ESTÁ LA CORRECCIÓN! ---
+import { useApp } from "../contexts/AppContext";
+
 export default function Carrito() {
-  const [items, setItems] = useState([]);
+  // Usamos el hook correcto
+  const { cartItems, removeFromCart, clearCart } = useApp();
 
-  // Cargar productos desde localStorage al iniciar
-  useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("products")) || [];
-    setItems(saved);
-  }, []);
+  const total = cartItems.reduce((acc, x) => acc + (x.price * x.quantity), 0);
 
-  // Guardar cambios en localStorage y actualizar estado
-  const setAndSave = (arr) => {
-    localStorage.setItem("products", JSON.stringify(arr));
-    setItems(arr);
-  };
-
-  // Eliminar producto
-  const eliminar = (id) => {
-    const nuevos = items.filter((x) => x.code !== id);
-    setAndSave(nuevos);
-  };
-
-  // Vaciar carrito
-  const limpiar = () => {
-    setAndSave([]);
-  };
-
-  // Calcular total
-  const total = items.reduce((acc, x) => acc + x.price, 0);
-
+  // El resto de tu JSX no cambia
   return (
     <div className="container py-5">
-      {/* Header del carrito */}
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h1 className="fw-bold text-success">🛒 Tu Carrito</h1>
         <div className="d-flex gap-2">
           <Link to="/catalogo" className="btn btn-outline-success fw-semibold">
             Seguir comprando
           </Link>
-          <button onClick={limpiar} className="btn btn-outline-danger fw-semibold">
+          <button onClick={clearCart} className="btn btn-outline-danger fw-semibold">
             Vaciar carrito
           </button>
         </div>
       </div>
 
-      {/* Contenido del carrito */}
-      {items.length === 0 ? (
+      {cartItems.length === 0 ? (
         <div className="text-center mt-5">
           <h4 className="text-muted">Tu carrito está vacío 🥕</h4>
           <Link to="/catalogo" className="btn btn-success mt-3">
@@ -66,13 +44,14 @@ export default function Carrito() {
                 <thead className="table-success">
                   <tr>
                     <th scope="col">Producto</th>
-                    <th scope="col">Precio</th>
+                    <th scope="col">Precio Unitario</th>
+                    <th scope="col">Cantidad</th>
                     <th scope="col">Subtotal</th>
                     <th></th>
                   </tr>
                 </thead>
                 <tbody>
-                  {items.map((p) => (
+                  {cartItems.map((p) => (
                     <tr key={p.code}>
                       <td>
                         <div className="d-flex align-items-center">
@@ -89,11 +68,12 @@ export default function Carrito() {
                         </div>
                       </td>
                       <td className="fw-semibold text-success">${p.price.toLocaleString("es-CL")}</td>
-                      <td className="fw-semibold text-success">${p.price.toLocaleString("es-CL")}</td>
+                      <td className="fw-semibold">x {p.quantity}</td>
+                      <td className="fw-semibold text-success">${(p.price * p.quantity).toLocaleString("es-CL")}</td>
                       <td>
                         <button
                           className="btn btn-sm btn-outline-danger"
-                          onClick={() => eliminar(p.code)}
+                          onClick={() => removeFromCart(p.code)}
                         >
                           ❌ Eliminar
                         </button>
@@ -105,7 +85,6 @@ export default function Carrito() {
             </div>
           </div>
 
-          {/* Total */}
           <div className="card-footer bg-light d-flex justify-content-between align-items-center">
             <h5 className="mb-0 text-success fw-bold">
               Total: ${total.toLocaleString("es-CL")}

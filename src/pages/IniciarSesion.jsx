@@ -1,33 +1,34 @@
-import { useState } from 'react'
-import Input from '../components/atoms/Input'
-import Button from '../components/atoms/Button'
+// src/pages/IniciarSesion.jsx
 
-export default function IniciarSesion(){
-  const [form, setForm] = useState({ email:'', clave1:'' })
-  const [msg, setMsg] = useState('\u00A0')
-  const [err, setErr] = useState({ email:false, clave1:false })
+import { useState } from 'react';
+import Input from '../components/atoms/Input';
+import Button from '../components/atoms/Button';
+import { useApp } from '../contexts/AppContext';
+
+export default function IniciarSesion() {
+  const [form, setForm] = useState({ username: '', clave1: '' });
+  const [msg, setMsg] = useState('\u00A0');
+  const { login } = useApp();
 
   const onChange = e => {
-    const { name, value } = e.target
-    setForm(prev => ({ ...prev, [name]: value }))
-    // limpiar error del campo al escribir
-    setErr(prev => ({ ...prev, [name]: false }))
-  }
+    const { name, value } = e.target;
+    setForm(prev => ({ ...prev, [name]: value }));
+  };
 
-  const onSubmit = (e) => {
-    e.preventDefault()
-    const emailErr = !form.email.includes('@')
-    const passErr = !form.clave1
-
-    if (emailErr || passErr) {
-      setErr({ email: emailErr, clave1: passErr })
-      setMsg('Error, revisa los campos en rojo!.')
-      return
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    if (!form.username || !form.clave1) {
+      setMsg('Error: Ambos campos son requeridos.');
+      return;
     }
-
-    setErr({ email:false, clave1:false })
-    setMsg('Formulario enviado correctamente!.')
-  }
+    try {
+      await login(form.username, form.clave1);
+      setMsg('¡Inicio de sesión exitoso! Redirigiendo...');
+      window.location.href = '/catalogo';
+    } catch (err) {
+      setMsg('Error: Usuario o contraseña incorrectos.');
+    }
+  };
 
   return (
     <main className="form-container">
@@ -35,30 +36,12 @@ export default function IniciarSesion(){
         <h2>Inicia sesión con tu cuenta</h2>
         <form onSubmit={onSubmit} noValidate>
           <div className="form-group">
-            <label htmlFor="email">Correo Electrónico</label>
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              placeholder="tu-correo@ejemplo.com"
-              value={form.email}
-              onChange={onChange}
-              error={err.email}
-              required
-            />
+            <label htmlFor="username">Nombre de Usuario</label>
+            <Input id="username" name="username" type="text" placeholder="Ingresa tu nombre de usuario" value={form.username} onChange={onChange} required />
           </div>
           <div className="form-group">
             <label htmlFor="clave1">Contraseña</label>
-            <Input
-              id="clave1"
-              name="clave1"
-              type="password"
-              placeholder="Ingresa tu contraseña"
-              value={form.clave1}
-              onChange={onChange}
-              error={err.clave1}
-              required
-            />
+            <Input id="clave1" name="clave1" type="password" placeholder="Ingresa tu contraseña" value={form.clave1} onChange={onChange} required />
           </div>
           <Button type="submit" className="button" style={{width:'100%'}}>Iniciar sesión</Button>
           <p className="secondary-text" id="errores" style={{textAlign:'center', marginTop: 15}}>{msg}</p>
@@ -68,5 +51,5 @@ export default function IniciarSesion(){
         </p>
       </div>
     </main>
-  )
+  );
 }
