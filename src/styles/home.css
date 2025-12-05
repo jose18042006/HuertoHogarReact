@@ -130,16 +130,9 @@ body.paper-texture {
 }
 
 /* CTA */
-.cta {
-  text-align: center;
-  background: var(--color-acento-verde);
-  color: #fff;
-}
 
-.cta .button {
-  background: #fff;
-  color: var(--color-acento-marron);
-}
+
+
 
 /* ===== FOOTER ===== */
 .site-footer {
@@ -154,9 +147,7 @@ body.paper-texture {
   background-color: #f0fff4; /* verde muy clarito */
   border: 1px solid #c6f6d5;
 }
-.benefits, .services {
-  background: transparent !important;
-}
+
 .menu.left {
   display: flex;
   gap: .75rem;

@@ -19,7 +19,6 @@ export default function HeroSection(){
 
           <div className="hero-actions">
             <Link className="button" to="/catalogo">Ver productos</Link>
-            <Link className="btn" to="/crear-cuenta">Crear cuenta</Link>
           </div>
         </div>
       </div>
