@@ -11,7 +11,6 @@ import Home from './pages/Home';
 import Catalogo from './pages/Catalogo';
 import CrearCuenta from './pages/CrearCuenta';
 import IniciarSesion from './pages/IniciarSesion';
-import Cambios from './pages/Cambios';
 import Carrito from './pages/Carrito';
 import Nosotros from './pages/Nosotros';
 import Perfil from './pages/Perfil';
@@ -31,7 +30,6 @@ export default function App() {
           <Route path="/iniciar-sesion" element={<IniciarSesion />} />
           <Route path="/nosotros" element={<Nosotros />} />
           <Route path="/carrito" element={<Carrito />} />
-          <Route path="/cambios" element={<Cambios />} />
 
           {/* Rutas Protegidas */}
           <Route
